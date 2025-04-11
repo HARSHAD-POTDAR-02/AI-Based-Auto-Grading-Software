@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Upload QA</title>
+      <link rel="stylesheet" href="/static/UploadQA.css">
+  </head>
+    <body>
+    <div class="login-container">
+      <div class="header">
+        <div class="logo">Checkit AI</div>
+        <div class="tagline">Upload your question paper and answer sheets</div>
+      </div>
+      <form action="/submit" method="post" enctype="multipart/form-data">
+
+        <div class="input-group">
+          <label for="subject">Subject:</label>
+          <select name="subject" id="subject" class="user-type-selector">
+            <option value="science">Science</option>
+            <option value="maths">Maths</option>
+            <option value="english">English</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="question-paper">Question Paper:</label>
+          <input type="file" name="question-paper" id="question-paper" class="file-upload">
+        </div>
+
+        <div class="input-group">
+          <label for="answer-sheets">Answer Sheets:</label>
+          <input type="file" name="answer-sheets" id="answer-sheets" class="file-upload" multiple>
+        </div>
+
+        <div class="input-group">
+          <label for="custom_prompt">Custom Prompt (optional):</label>
+          <textarea name="custom_prompt" id="custom_prompt" rows="4" placeholder="Enter custom prompt here (optional)"></textarea>
+        </div>
+        <button type="submit" id="submit-btn">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>

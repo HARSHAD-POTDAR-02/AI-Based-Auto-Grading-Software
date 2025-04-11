@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .report-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .report-title {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .report-content {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #2c3e50;
+        }
+
+        .question-block {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .question-title {
+            color: #27ae60;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .answer-section {
+            margin: 15px 0;
+            padding: 12px;
+            background: #f5f6fa;
+            border-radius: 6px;
+            border-left: 4px solid #ecf0f1;
+        }
+
+        .similarity-score {
+            color: #2980b9;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .marks-awarded {
+            color: #27ae60;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .total-marks {
+            font-size: 1.2em;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #219a52;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <div class="header">
+            <div class="report-title">Evaluation Report</div>
+            <div class="tagline">Automated Grading Results</div>
+        </div>
+
+        <div class="report-content" id="raw-content">
+            {{ content | safe }}
+        </div>
+
+        <div class="button-group">
+            <a href="/" class="btn btn-primary">Back to Home</a>
+            <a href="/download-report" class="btn btn-primary">Download Report</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contentElement = document.getElementById('raw-content');
+            let content = contentElement.innerHTML;
+
+            // Add proper HTML structure
+            content = content
+                // Format headers
+                .replace(/(Evaluation Report generated at:.*?)\n/g, '<div class="report-header">$1</div>')
+                .replace(/={80}/g, '<hr class="section-divider">')
+
+                // Format questions
+                .replace(/(Question \d+:.*?)(?=(Question \d+:|Total Marks|$))/gs, (match) => {
+                    return `<div class="question-block">${match
+                        .replace(/Question (\d+):/g, '<div class="question-title">Question $1:</div>')
+                        .replace(/Ideal Answer:/g, '</div><div class="answer-section"><strong>Ideal Answer:</strong>')
+                        .replace(/Student Answer:/g, '</div><div class="answer-section"><strong>Student Answer:</strong>')
+                        .replace(/Similarity: (.*?)%/g, '<div class="similarity-score">Similarity: $1%</div>')
+                        .replace(/Marks Awarded: (.*?)\n/g, '<div class="marks-awarded">$1</div>')
+                        }</div>`;
+                })
+
+                // Format total marks
+                .replace(/Total Marks Awarded: (.*?)\n/g, '<div class="total-marks">Total Marks: $1</div>')
+
+                // Clean up empty divs
+                .replace(/<div class="answer-section"><\/div>/g, '');
+
+            contentElement.innerHTML = content;
+
+            // Add final cleanup for line breaks
+            const elementsToClean = document.querySelectorAll('.question-block, .answer-section');
+            elementsToClean.forEach(element => {
+                element.innerHTML = element.innerHTML
+                    .replace(/\n/g, '<br>')
+                    .replace(/<br><br>/g, '<br>');
+            });
+        });
+    </script>
+</body>
+</html>
