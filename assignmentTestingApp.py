@@ -10,7 +10,7 @@ from transformers import pipeline, AutoTokenizer, AutoModel
 import torch
 
 app = Flask(__name__)
-app.secret_key = "3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p8"  # Replace with a secure key
+app.secret_key =   # Replace with a secure key
 
 # Configure upload folder
 UPLOAD_FOLDER = 'uploads'
@@ -35,8 +35,8 @@ if not os.path.exists(EVALUATION_FOLDER):
 
 # Initialize Azure Form Recognizer client
 # Replace with your Azure Form Recognizer endpoint and key
-endpoint = "https://harshad.cognitiveservices.azure.com/"
-api_key = "8KEwKkCvjI9TbWiZYHK5Qv9hRuqaSslnsuFCgIEw9rNjskTGPKpMJQQJ99BBACGhslBXJ3w3AAALACOGJjok"  # Replace with your actual API key
+endpoint = # Replace with your actual endpoint 
+api_key =   # Replace with your actual API key
 client = DocumentAnalysisClient(endpoint=endpoint, credential=AzureKeyCredential(api_key))
 
 # Constants
